@@ -1,0 +1,91 @@
+<html>
+    <head>
+        <style>
+            html, body {
+                height: 100%; width: 100%;
+                background: #5398e8;
+            }
+        </style>
+        
+        <!-- JQUERY -->
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+        <script src="js/jquery.simpleWeather.js"></script>
+        
+        <script>
+            $(document).ready(function() {
+                var forecast = "og";
+                /*
+                weather.temp = current temp
+                weather.high and weather.low = highs/lows
+                weather.currently = current weather (cloudy, sunny, etc.)
+                weather.text = weather PATTERN (thunderstorm, scattered thund., etc.)
+                
+                weather.sunrise .sunset = sunrise/sunset
+                weather.thumbnail = yahoo thumbnail for weather (same as weather.image)
+                
+                gets weather FORECAST--> weather.forecast[1] returns TOMORROWS FORECAST
+                for(var i=0;i<weather.forecast.length;i++) {
+                    html += i + '<p>weather.forecast['+i+'].date: '+weather.forecast[i].date+'</p>';
+                    html += '<p>weather.forecast['+i+'].day: '+weather.forecast[i].day+'</p>';
+                    html += '<p>weather.forecast['+i+'].code: '+weather.forecast[i].code+'</p>';
+                    html += '<p>weather.forecast['+i+'].high: '+weather.forecast[i].high+'</p>';
+                    html += '<p>weather.forecast['+i+'].low: '+weather.forecast[i].low+'</p>';
+                    html += '<p>weather.forecast['+i+'].alt.high: '+weather.forecast[i].alt.high+'</p>';
+                    html += '<p>weather.forecast['+i+'].alt.low: '+weather.forecast[i].alt.low+'</p>';
+                    html += '<p>weather.forecast['+i+'].thumbnail: '+weather.forecast[i].thumbnail+'</p>';
+                    html += '<p>weather.forecast['+i+'].image: '+weather.forecast[i].image+'</p>';
+                    html += '<p>weather.forecast['+i+'].text: '+weather.forecast[i].text+'</p>';
+                  }
+                  */
+            
+                $(function() {
+                    var curr_loc = "";
+                    
+                    if ("geolocation" in navigator && navigator.userAgent.indexOf("Chrome") == -1) 
+                    {
+                        navigator.geolocation.getCurrentPosition(function(position) {
+                            curr_loc = position.coords.latitude + "," + position.coords.longitude;
+                        });
+                    }
+                    
+                    else {
+                        curr_loc = "Minneapolis, MN";
+                    }
+                                                                
+                    $.simpleWeather({
+                        location: curr_loc,
+                        unit: 'f',
+                        success: function(weather) {
+                            html = "<p class='weather-forecast'>The current weather in " + weather.city + " is " + (weather.currently).toLowerCase() + " with a temperature of " + weather.temp + " degrees Fahrenheit. Highs and lows are " + weather.high + " and " + weather.low + " degrees respectively.</p>";
+                            
+                            html += "<img src='" + weather.image + "'/>";
+                            
+                            html += "<p class='forecast'> The forecast for the next few days is:<br/>";
+                            for (var i = 1; i < 4; i++) {
+                                html+= weather.forecast[i].day + ": <img src='" + weather.forecast[i].image + "'/> High of " + weather.forecast[i].high + " and low of " + weather.forecast[i].low + ".<br/>";
+                            }
+                            html += "</p>"
+                            
+                            $("#test-div").append(html);
+                            
+                            forecast = $(".weather-forecast").text();
+                            console.log(forecast);
+                            responsiveVoice.speak(forecast, "Australian Female")
+                        },
+                        error: function(error) {
+                            $("#test-div").html('<p>' + error.message + '</p>');
+                        }
+                    });
+                });
+                
+            });
+                
+        </script>
+    </head>
+    <body>
+        <div id="test-div">
+            
+        </div>
+    </body>
+</html>
