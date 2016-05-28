@@ -138,7 +138,7 @@
               var request = gapi.client.gmail.users.messages.list({
                 'userId': 'me',
                 'labelIds': 'INBOX',
-                'maxResults': 10
+                'maxResults': 20
               });
 
               request.execute(function(response) {
