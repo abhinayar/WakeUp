@@ -40,47 +40,46 @@
                   */
             
                 $(function() {
-                    var loc_global = "";
-                    
                     if ("geolocation" in navigator) 
                     {
                         navigator.geolocation.getCurrentPosition(function(position) {
                             var curr_loc = position.coords.latitude + ',' + position.coords.longitude;
-                            loc_global = curr_loc;
+                            loadweather(curr_loc);
                         });
                         console.log("Geolocation enabled, current location is:" + curr_loc);
-                        
-                        loc_global = curr_loc;
                     }
                     
                     else {
-                        loc_global = "Minneapolis, MN";
+                        var curr_loc = "Minneapolis, MN";
+                        loadweather(curr_loc);
                     }
                                                                 
-                    $.simpleWeather({
-                        location: loc_global,
-                        unit: 'f',
-                        success: function(weather) {
-                            html = "<p class='weather-forecast'>The current weather in " + weather.city + " is " + (weather.currently).toLowerCase() + " with a temperature of " + weather.temp + " degrees Fahrenheit. Highs and lows are " + weather.high + " and " + weather.low + " degrees respectively.</p>";
-                            
-                            html += "<img src='" + weather.image + "'/>";
-                            
-                            html += "<p class='forecast'> The forecast for the next few days is:<br/>";
-                            for (var i = 1; i < 4; i++) {
-                                html+= weather.forecast[i].day + ": <img src='" + weather.forecast[i].image + "'/> High of " + weather.forecast[i].high + " and low of " + weather.forecast[i].low + ".<br/>";
+                    function loadweather(location) {
+                        $.simpleWeather({
+                            location: loc_global,
+                            unit: 'f',
+                            success: function(weather) {
+                                html = "<p class='weather-forecast'>The current weather in " + weather.city + " is " + (weather.currently).toLowerCase() + " with a temperature of " + weather.temp + " degrees Fahrenheit. Highs and lows are " + weather.high + " and " + weather.low + " degrees respectively.</p>";
+                                
+                                html += "<img src='" + weather.image + "'/>";
+                                
+                                html += "<p class='forecast'> The forecast for the next few days is:<br/>";
+                                for (var i = 1; i < 4; i++) {
+                                    html+= weather.forecast[i].day + ": <img src='" + weather.forecast[i].image + "'/> High of " + weather.forecast[i].high + " and low of " + weather.forecast[i].low + ".<br/>";
+                                }
+                                html += "</p>"
+                                
+                                $("#test-div").append(html);
+                                
+                                forecast = $(".weather-forecast").text();
+                                console.log(forecast);
+                                responsiveVoice.speak(forecast, "Australian Female")
+                            },
+                            error: function(error) {
+                                $("#test-div").html('<p>' + error.message + '</p>');
                             }
-                            html += "</p>"
-                            
-                            $("#test-div").append(html);
-                            
-                            forecast = $(".weather-forecast").text();
-                            console.log(forecast);
-                            responsiveVoice.speak(forecast, "Australian Female")
-                        },
-                        error: function(error) {
-                            $("#test-div").html('<p>' + error.message + '</p>');
-                        }
-                    });
+                        });
+                    };
                 });
                 
             });
