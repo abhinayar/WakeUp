@@ -44,10 +44,9 @@
                     
                     if ("geolocation" in navigator) 
                     {
-                        var curr_loc;
-                        
                         navigator.geolocation.getCurrentPosition(function(position) {
-                            curr_loc = position.coords.latitude + ',' + position.coords.longitude;
+                            var curr_loc = position.coords.latitude + ',' + position.coords.longitude;
+                            loc_global = curr_loc;
                         });
                         console.log("Geolocation enabled, current location is:" + curr_loc);
                         
