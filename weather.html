@@ -44,9 +44,9 @@
                     {
                         navigator.geolocation.getCurrentPosition(function(position) {
                             var curr_loc = position.coords.latitude + ',' + position.coords.longitude;
+                            console.log("Geolocation enabled, current location is:" + curr_loc);
                             loadweather(curr_loc);
                         });
-                        console.log("Geolocation enabled, current location is:" + curr_loc);
                     }
                     
                     else {
@@ -56,7 +56,7 @@
                                                                 
                     function loadweather(location) {
                         $.simpleWeather({
-                            location: loc_global,
+                            location: location,
                             unit: 'f',
                             success: function(weather) {
                                 html = "<p class='weather-forecast'>The current weather in " + weather.city + " is " + (weather.currently).toLowerCase() + " with a temperature of " + weather.temp + " degrees Fahrenheit. Highs and lows are " + weather.high + " and " + weather.low + " degrees respectively.</p>";
