@@ -40,24 +40,26 @@
                   */
             
                 $(function() {
-                    var curr2_loc = "";
+                    var loc_global = "";
                     
                     if ("geolocation" in navigator) 
                     {
+                        var curr_loc;
+                        
                         navigator.geolocation.getCurrentPosition(function(position) {
-                            var curr_loc = position.coords.latitude + ',' + position.coords.longitude;
-                            console.log(curr_loc);
+                            curr_loc = position.coords.latitude + ',' + position.coords.longitude;
                         });
                         console.log("Geolocation enabled, current location is:" + curr_loc);
-                        console.log("--unsafely-treat-insecure-origin-as-secure=");
+                        
+                        loc_global = curr_loc;
                     }
                     
                     else {
-                        curr_loc = "Minneapolis, MN";
+                        loc_global = "Minneapolis, MN";
                     }
                                                                 
                     $.simpleWeather({
-                        location: curr_loc,
+                        location: loc_global,
                         unit: 'f',
                         success: function(weather) {
                             html = "<p class='weather-forecast'>The current weather in " + weather.city + " is " + (weather.currently).toLowerCase() + " with a temperature of " + weather.temp + " degrees Fahrenheit. Highs and lows are " + weather.high + " and " + weather.low + " degrees respectively.</p>";
