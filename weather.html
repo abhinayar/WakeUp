@@ -40,12 +40,12 @@
                   */
             
                 $(function() {
-                    var curr_loc = "";
+                    var curr2_loc = "";
                     
                     if ("geolocation" in navigator) 
                     {
                         navigator.geolocation.getCurrentPosition(function(position) {
-                            curr_loc = position.coords.latitude + ',' + position.coords.longitude;
+                            var curr_loc = position.coords.latitude + ',' + position.coords.longitude;
                             console.log(curr_loc);
                         });
                         console.log("Geolocation enabled, current location is:" + curr_loc);
